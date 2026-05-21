@@ -1,0 +1,44 @@
+-- [[ Centered UI Gradient Circle Script - Perfect Center Fix ]]
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- Configuration Profile
+local CircleSize = 120         -- Small size
+local TransparencyValue = 0.45 -- Exactly 0.45 Transparency
+
+-- Clean up any pre-existing instances to prevent screen clutter
+local oldGui = player:WaitForChild("PlayerGui"):FindFirstChild("CenteredGradientGui")
+if oldGui then oldGui:Destroy() end
+
+-- Main Container Setup
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "CenteredGradientGui"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true -- CRITICAL FIX: Forces UI to ignore the topbar and hit the true center
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Base Frame (Perfect square centered on the screen)
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, CircleSize, 0, CircleSize)
+mainFrame.Position = UDim2.new(0.5, -CircleSize/2, 0.5, -CircleSize/2) -- True Center
+mainFrame.BackgroundTransparency = TransparencyValue
+mainFrame.BorderSizePixel = 0
+mainFrame.Parent = screenGui
+
+-- Maxing out the corner radius forces the square frame into a perfect circle
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(1, 0) 
+frameCorner.Parent = mainFrame
+
+-- Smooth Gradient Shift Effect
+local uiGradient = Instance.new("UIGradient")
+uiGradient.Rotation = 45 -- Diagonal flow color grading
+
+-- Color Sequence (Green -> Teal -> Blue)
+uiGradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(46, 204, 113)),  -- Vibrant Green
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(26, 188, 156)), -- Soft Teal
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(52, 152, 219))    -- Smooth Blue
+})
+
+uiGradient.Parent = mainFrame
