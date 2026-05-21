@@ -1,0 +1,6 @@
+local keybind = Enum.KeyCode.B;
+getgenv().blatant = true;
+getgenv().fov = 300;
+(cloneref or function(i: Instance) return i; end)(game:GetService("UserInputService")).InputBegan:Connect(function(io, gp) if not gp and io.KeyCode == keybind then getgenv().blatant = not getgenv().blatant; end; end);
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sneekygoober/Rivals-Silent-Aim-Script/refs/heads/main/main.luau"))();
